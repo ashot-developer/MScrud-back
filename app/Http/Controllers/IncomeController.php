@@ -14,11 +14,10 @@ class IncomeController extends Controller
 
     public function getBlackIncome(){
         $saledProducts = Sale::all()->toArray();
-        $products = Product::all()->toArray();
         foreach($saledProducts as $saledProduct){
 
 
-            $income = Product::getPriceBySku($saledProduct['sku']) * $saledProduct['product_qty'];
+            $income = $saledProduct['sale_price'] * $saledProduct['product_qty'];
             $date = $saledProduct['sale_date'];
             $index = (int)Carbon::parse($saledProduct['sale_date'])->format('m');
             $oldPrice = $this->incomByM[$index - 1];

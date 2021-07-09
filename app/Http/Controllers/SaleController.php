@@ -54,6 +54,8 @@ class SaleController extends Controller
             'sku' => $request->input('sku'),
             'product_name' => $product->product_name,
             'sale_date' => Carbon::now()->format('d.m.Y H:i'),
+            'input_price' => $product->input_price,
+            'sale_price' => $product->sale_price,
             'product_qty' =>  $request->input('qty'),
         ]);
     
@@ -108,16 +110,23 @@ class SaleController extends Controller
         $saledProduct = Sale::find($id);
         $product = Product::getProductBySku($saledProduct->sku);
 
+        if($product){
+            $count = $product->product_qty + $saledProduct->product_qty;
+            $pr = Product::find($product->id);
+            $pr->product_qty = $count;
+    
+            $pr->save();
 
-        $count = $product->product_qty + $saledProduct->product_qty;
-        $pr = Product::find($product->id);
-        $pr->product_qty = $count;
-
-        $pr->save();
-
-        if(Sale::destroy($id)){
-            return $pr;
+            if(Sale::destroy($id)){
+                return $pr;
+            }
+        }else{
+            
+            return Sale::destroy($id);
         }
+
+
+        
 
     }
 }

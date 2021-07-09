@@ -17,6 +17,8 @@ class CreateSalesTable extends Migration
             $table->id();
             $table->integer('sku');
             $table->string('product_name');
+            $table->integer('input_price');
+            $table->integer('sale_price');
             $table->integer('product_qty');
             $table->string('sale_date');
             $table->timestamps();
