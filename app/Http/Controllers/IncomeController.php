@@ -42,9 +42,8 @@ class IncomeController extends Controller
         $clearIncome = $blackIncome = 0;
         foreach($saledProducts as $saledProduct){
 
-            $product = Product::getProductBySku($saledProduct['sku']);
-            $clearIncome += ($product->sale_price - $product->input_price) * $saledProduct['product_qty'];
-            $blackIncome += $product->sale_price * $saledProduct['product_qty'];
+            $clearIncome += ($saledProduct['sale_price'] - $saledProduct['input_price']) * $saledProduct['product_qty'];
+            $blackIncome += $saledProduct['sale_price'] * $saledProduct['product_qty'];
          
             
         }
